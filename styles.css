@@ -1,0 +1,499 @@
+/* Reset and base styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+}
+
+body.postcard-body {
+    height: 100vh;
+    overflow: hidden;
+    padding-bottom: 0;
+}
+
+/* Postcard split-screen layout */
+.postcard-layout {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+.postcard-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(2rem, 5vw, 4rem);
+    overflow-y: auto;
+    border-right: 1px solid #ddd;
+}
+
+.postcard-right {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 2rem;
+    background-color: #fafafa;
+    background-image: url('https://upload.wikimedia.org/wikipedia/commons/9/9c/View_of_Altadena_from_the_Sunset_Ridge_Picnic_Area.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.postcard-right::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(250, 250, 250, 0.7);
+    z-index: 0;
+}
+
+.postcard-right > * {
+    position: relative;
+    z-index: 1;
+}
+
+.container {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(2rem, 1vh, 4rem);
+}
+/* Title and subtitle with elegant cursive font and full width */
+.site-title {
+    font-family: 'Caveat', cursive;
+    font-size: clamp(3rem, 8vw, 10rem);
+    width: 100%;
+    max-width: 100%;
+    line-height: 1.1;
+    text-align: left;
+}
+
+.subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 3vw;
+    width: 90%;
+    max-width: 100%;
+    line-height: 1.2;
+    text-align: left;
+}
+
+.text-item {
+    font-family: 'Inter', sans-serif;
+    font-size: 2vw;
+    width: 90%;
+    max-width: 100%;
+    line-height: 1.2;
+    text-align: left;
+}
+
+.event-item {
+    font-family: 'Inter', sans-serif;
+    font-size: 3vw;
+    width: 100%;
+    max-width: 100%;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+/* Postcard templates container */
+.postcard-templates {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    width: 100%;
+    max-width: 100%;
+}
+
+.postcard-link {
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.postcard-link:hover {
+    transform: scale(1.02);
+    opacity: 0.9;
+}
+
+.postcard-template {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    cursor: pointer;
+    outline: 1px solid #ffcc00;
+}
+
+.submit-link {
+    color: #333;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.submit-link:hover {
+    color: #000;
+    background-color: #ffdd00;
+}
+
+/* Contact form container */
+.contact-form-container {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.contact-form-container iframe {
+    width: 100%;
+    max-width: 640px;
+    height: 742px;
+    border: none;
+    display: block;
+}
+
+/* Stamp container in right side of postcard - right aligned */
+.stamp-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-start;
+    z-index: 1000;
+    width: 100%;
+}
+
+.stamp-link {
+    display: inline-block;
+    text-decoration: none;
+    border: none;
+    outline: none;
+}
+
+.stamp {
+    max-width: 350px;
+    width: auto;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    display: block;
+    border: none;
+    outline: none;
+}
+
+.stamp:hover {
+    transform: scale(1.05);
+}
+
+/* Menu below stamp - always visible, right aligned with stamp */
+.stamp-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 1rem;
+    margin-right: 2rem;
+    width: auto;
+    max-width: 350px;
+}
+
+.menu-item {
+    text-decoration: none;
+    color: #333;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.125rem;
+    padding: 5px 5px;
+    text-align: right;
+    display: block;
+    transition: color 0.2s ease;
+}
+
+.menu-item:hover {
+    color: #000000;
+    background-color: #ffdd00;
+}
+
+hr.solid {
+    border-left: none;
+    border-right: none;
+    border-top: 1px solid #000000;
+    border-bottom: none;
+    margin: 0;
+}
+
+/* Archive layout - 4 column design */
+.archive-container {
+    padding: 2rem;
+}
+
+.archive-columns {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    align-items: start;
+}
+
+.archive-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    height: 100%;
+}
+
+.column-header {
+    margin-bottom: 0.5rem;
+    min-height: 3.5rem;
+}
+
+.column-date {
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.column-location {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    margin: 0.25rem 0 0 0;
+    color: #666;
+    line-height: 1.2;
+}
+
+.postcard-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    width: 100%;
+}
+
+.postcard-image {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    color: #999;
+    flex-shrink: 0;
+}
+
+.postcard-caption {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.75rem;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    line-height: 1.2;
+    min-height: 1.5rem;
+}
+
+/* Responsive design for archive */
+@media (max-width: 1200px) {
+    .archive-columns {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Bottom navigation bar */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-top: 1px solid #ddd;
+    padding: 0.75rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    z-index: 999;
+    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.bottom-nav-item {
+    text-decoration: none;
+    color: #333;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.875rem;
+    padding: 0.5rem 0.75rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border-radius: 4px;
+    white-space: nowrap;
+}
+
+.bottom-nav-item:hover {
+    background-color: #ffd500;
+    color: #333;
+}
+
+/* Add padding to body to prevent content from being hidden behind bottom nav (only for non-postcard pages) */
+body:not(.postcard-body) {
+    padding-bottom: 60px;
+}
+
+/* Tablet and smaller screens */
+@media (max-width: 1024px) {
+    .subtitle {
+        font-size: clamp(1rem, 4vw, 1.5rem);
+    }
+    
+    .text-item {
+        font-size: clamp(0.875rem, 3vw, 1.125rem);
+    }
+    
+    .stamp {
+        max-width: 280px;
+    }
+}
+
+/* Mobile and small screens */
+@media (max-width: 768px) {
+    .archive-container {
+        padding: 1rem;
+    }
+    
+    .archive-columns {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    /* Hide bottom nav on mobile */
+    .bottom-nav {
+        display: none;
+    }
+    
+    /* Stack postcard layout on mobile - reorder: right first, left second */
+    .postcard-layout {
+        flex-direction: column;
+        height: auto;
+        min-height: 100vh;
+    }
+    
+    .postcard-right {
+        order: -1;
+        min-height: auto;
+        padding: 1.5rem 1rem;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+    }
+    
+    .postcard-left {
+        order: 1;
+        border-right: none;
+        border-bottom: none;
+        padding: clamp(1rem, 4vw, 2rem);
+    }
+    
+    body.postcard-body {
+        overflow-y: auto;
+        padding-bottom: 0;
+    }
+    
+    /* Typography adjustments for mobile */
+    .site-title {
+        font-size: clamp(2rem, 10vw, 4rem);
+    }
+    
+    .subtitle {
+        font-size: clamp(0.875rem, 4vw, 1.25rem);
+        width: 100%;
+    }
+    
+    .text-item {
+        font-size: clamp(0.875rem, 3.5vw, 1rem);
+        width: 100%;
+    }
+    
+    .event-item {
+        font-size: clamp(0.875rem, 4vw, 1.25rem);
+    }
+    
+    /* Postcard templates - single column on mobile */
+    .postcard-templates {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    /* Stamp and menu adjustments for mobile - smaller sizes */
+    .stamp-container {
+        align-items: center;
+        width: 100%;
+    }
+    
+    .stamp {
+        max-width: 180px;
+        width: 100%;
+    }
+    
+    .stamp-menu {
+        align-items: center;
+        margin-right: 0;
+        margin-top: 0.75rem;
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .menu-item {
+        text-align: center;
+        font-size: 0.875rem;
+        padding: 6px 5px;
+        width: 100%;
+    }
+    
+    /* Contact form adjustments */
+    .contact-form-container iframe {
+        height: 600px;
+        max-width: 100%;
+    }
+}
+
+/* Very small screens */
+@media (max-width: 480px) {
+    .postcard-left {
+        padding: 1rem;
+    }
+    
+    .postcard-right {
+        padding: 1rem;
+    }
+    
+    .site-title {
+        font-size: clamp(1.75rem, 12vw, 3rem);
+    }
+    
+    .stamp {
+        max-width: 150px;
+    }
+    
+    .menu-item {
+        font-size: 0.8rem;
+        padding: 5px;
+    }
+    
+    .stamp-menu {
+        margin-top: 0.5rem;
+    }
+    
+    .contact-form-container iframe {
+        height: 500px;
+    }
+}
+

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Dear Altadena - Map view">
+    <title>Altadena Map - Dear Altadena</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin=""/>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        #map {
+            width: 100%;
+            height: 100vh;
+            background-color: #f5f0e8; /* Warm beige background */
+        }
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+        }
+        /* Beige filter for map tiles - warm, positive, easy to read */
+        .leaflet-tile {
+            filter: sepia(30%) saturate(80%) brightness(105%) contrast(90%) hue-rotate(-5deg);
+        }
+        /* Custom marker styles - warm, positive colors */
+        .custom-marker {
+            background-color: #7700ff; /* Warm beige-brown */
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            box-shadow: 0 2px 4px rgba(0, 255, 17, 0.2);
+        }
+        .custom-popup {
+            font-family: 'Inter', sans-serif;
+            text-align: left;
+            font-size: 14px;
+            line-height: 1.5;
+            max-width: 300px;
+        }
+        .custom-popup strong {
+            font-size: 16px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        .custom-popup .popup-section {
+            margin-top: 6px;
+        }
+        .custom-popup a {
+            color: #6746d2; /* Warm brown for links */
+            text-decoration: underline;
+        }
+        .custom-popup a:hover {
+            color: #6746d2; /* Darker brown on hover */
+        }
+        /* Leaflet popup styling for better readability */
+        .leaflet-popup-content-wrapper {
+            background-color: #faf8f3; /* Light beige background */
+            border-radius: 8px;
+        }
+        .leaflet-popup-tip {
+            background-color: #faf8f3;
+        }
+    </style>
+</head>
+<body>
+    <div class="stamp-container">
+        <a href="index.html" class="stamp-link">
+            <img src="static/DearAltadena_logo.png" alt="Dear Altadena stamp" class="stamp">
+        </a>
+        <div class="dropdown-menu">
+            <a href="info.html" class="menu-item">info</a>
+            <a href="resources.html" class="menu-item">resources</a>
+            <a href="map.html" class="menu-item">visit us / date time place</a>
+            <a href="archive.html" class="menu-item">submit your postcard</a>
+        </div>
+    </div>
+    <div class="map-container">
+        <div id="map"></div>
+    </div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    <script>
+        // Altadena, CA coordinates
+        const altadenaLat = 34.1894;
+        const altadenaLng = -118.1313;
+        
+        // Initialize map centered on Altadena
+        const map = L.map('map').setView([altadenaLat, altadenaLng], 12);
+        
+        // Add OpenStreetMap tile layer (styled with warm beige filter for positive, readable neighborhood map)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19
+        }).addTo(map);
+        
+        // Create custom black marker icon
+        const blackMarkerIcon = L.divIcon({
+            className: 'custom-marker',
+            html: '',
+            iconSize: [20, 20],
+            iconAnchor: [10, 10],
+            popupAnchor: [0, -10]
+        });
+        
+        // OPTION 1: Add points directly in JavaScript
+        // Organizations and points of interest in Altadena
+        const pointsOfInterest = [
+            {
+                name: "Altadena Library",
+                lat: 34.1917,
+                lng: -118.1308,
+                collaborationType: "Full collaboration - Booth available",
+                contact: "Contact via Sangita",
+                description: "Library offering booth space for community events"
+            },
+            {
+                name: "Altadena Farmers Market",
+                lat: 34.1878,
+                lng: -118.1289,
+                collaborationType: "Event space - Fridays 4-8pm",
+                location: "Loma Alta Park - Farmers market lot, set up in park area",
+                website: "https://maps.app.goo.gl/pEwscBv1QrFLFESr5",
+                description: "Weekly farmers market at Loma Alta Park"
+            },
+            {
+                name: "Altadena Seed Library",
+                lat: 34.1917,
+                lng: -118.1308,
+                collaborationType: "Purchase seeds & materials, get zine about planting",
+                contact: "socalseedsociety@gmail.com",
+                website: "https://www.altadenaseedlibrary.com/initiatives",
+                contactPage: "https://www.altadenaseedlibrary.com/contact",
+                description: "Seed library - donation opportunity"
+            },
+            {
+                name: "Octavia's Bookshelf",
+                lat: 34.1895,
+                lng: -118.1315,
+                collaborationType: "Partnership opportunity",
+                contact: "(626) 421-6222, info@octaviasbookshelf.com",
+                website: "https://www.octaviasbookshelf.com/",
+                description: "Bookstore - Brunch on Saturdays"
+            },
+            {
+                name: "Our Spot Loma Alta Community Center",
+                lat: 34.1878,
+                lng: -118.1289,
+                collaborationType: "After school program partnership (12-18 year olds)",
+                contact: "(626) 398-5451",
+                location: "3330 N. Lincoln Ave., Altadena 91001",
+                description: "After school program at Loma Alta Park"
+            },
+            {
+                name: "Amigos De Los Rios",
+                lat: 34.1520,
+                lng: -118.1449,
+                collaborationType: "Copromotion - Resources sharing",
+                contact: "https://amigosdelosrios.org/contact-us/",
+                website: "https://amigosdelosrios.org/",
+                resources: "https://amigosdelosrios.org/emerald-necklace-native-plant-palette/",
+                description: "Great resources available - connecting to prioritize sharing"
+            },
+            {
+                name: "Chaney Trail Corridor",
+                lat: 34.2200,
+                lng: -118.0700,
+                collaborationType: "Copromotion",
+                contact: "https://www.chaneytrailcorridor.org/contact",
+                website: "https://www.chaneytrailcorridor.org/portfolio",
+                description: "Trail corridor organization"
+            },
+            {
+                name: "JPL (Jet Propulsion Laboratory)",
+                lat: 34.2004,
+                lng: -118.1738,
+                collaborationType: "Resources/handouts - Focusing on the future",
+                contact: "https://www.jpl.nasa.gov/who-we-are/media-information/jpl-media-contacts/",
+                website: "https://www.jpl.nasa.gov/missions/?mission_status=future",
+                description: "NASA Jet Propulsion Laboratory"
+            },
+            {
+                name: "Caltech",
+                lat: 34.1377,
+                lng: -118.1253,
+                collaborationType: "Engineering school partnership",
+                contact: "Emily Velasco, Media Relations Manager<br>(626) 395-6487<br>evelasco@caltech.edu",
+                website: "https://www.caltech.edu/about/media-relations",
+                description: "Engineering school in Pasadena, connected to JPL"
+            }
+        ];
+        
+        // Add markers for each point
+        pointsOfInterest.forEach(point => {
+            let popupContent = `<div class="custom-popup"><strong>${point.name}</strong>`;
+            
+            if (point.collaborationType) {
+                popupContent += `<div class="popup-section"><strong>Collaboration:</strong> ${point.collaborationType}</div>`;
+            }
+            
+            if (point.description) {
+                popupContent += `<div class="popup-section">${point.description}</div>`;
+            }
+            
+            if (point.location) {
+                popupContent += `<div class="popup-section"><strong>Location:</strong> ${point.location}</div>`;
+            }
+            
+            if (point.contact) {
+                popupContent += `<div class="popup-section"><strong>Contact:</strong> ${point.contact}</div>`;
+            }
+            
+            if (point.website) {
+                popupContent += `<div class="popup-section"><strong>Website:</strong> <a href="${point.website}" target="_blank">Visit</a></div>`;
+            }
+            
+            if (point.contactPage) {
+                popupContent += `<div class="popup-section"><a href="${point.contactPage}" target="_blank">Contact Page</a></div>`;
+            }
+            
+            if (point.resources) {
+                popupContent += `<div class="popup-section"><a href="${point.resources}" target="_blank">Resources</a></div>`;
+            }
+            
+            popupContent += `</div>`;
+            
+            const marker = L.marker([point.lat, point.lng], { icon: blackMarkerIcon })
+                .addTo(map)
+                .bindPopup(popupContent);
+        });
+        
+        // OPTION 2: Load from GeoJSON file (uncomment to use)
+        /*
+        fetch('points-of-interest.geojson')
+            .then(response => response.json())
+            .then(data => {
+                L.geoJSON(data, {
+                    pointToLayer: function(feature, latlng) {
+                        return L.marker(latlng, { icon: blackMarkerIcon });
+                    },
+                    onEachFeature: function(feature, layer) {
+                        if (feature.properties) {
+                            layer.bindPopup(`
+                                <div class="custom-popup">
+                                    <strong>${feature.properties.name || ''}</strong><br>
+                                    ${feature.properties.description || ''}
+                                </div>
+                            `);
+                        }
+                    }
+                }).addTo(map);
+            })
+            .catch(error => console.error('Error loading GeoJSON:', error));
+        */
+    </script>
+</body>
+</html>

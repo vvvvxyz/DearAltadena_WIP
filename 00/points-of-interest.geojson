@@ -1,0 +1,27 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-118.0961, 34.1778]
+      },
+      "properties": {
+        "name": "Eaton Canyon Natural Area",
+        "description": "Popular hiking destination"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [-118.1450, 34.1920]
+      },
+      "properties": {
+        "name": "Altadena Community Garden",
+        "description": "Community green space"
+      }
+    }
+  ]
+}
